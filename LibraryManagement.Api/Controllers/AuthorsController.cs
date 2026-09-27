@@ -1,4 +1,6 @@
-﻿using LibraryManagement.Application.Authors.Commands.CreateAuthor;
+using LibraryManagement.Application.Authors;
+using LibraryManagement.Application.Authors.Commands.CreateAuthor;
+using LibraryManagement.Application.Authors.Queries.GetAuthors;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,5 +25,14 @@ public class AuthorsController : ControllerBase
         var authorId = await _sender.Send(command, cancellationToken);
 
         return Ok(authorId);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<List<AuthorDto>>> GetAuthors(
+        CancellationToken cancellationToken)
+    {
+        var query = new GetAuthorsQuery();
+        var authors = await _sender.Send(query, cancellationToken);
+        return Ok(authors);
     }
 }
