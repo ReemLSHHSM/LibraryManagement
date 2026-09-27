@@ -18,7 +18,8 @@ public static class DependencyInjection
                 configuration.GetConnectionString("DefaultConnection")));
 
         services.AddScoped<IAuthorRepository, AuthorRepository>();
+    services.AddScoped<IBookRepository, BookRepository>();
 
-        return services;
+    return services;
     }
 }
