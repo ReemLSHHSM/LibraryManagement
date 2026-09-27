@@ -1,5 +1,7 @@
 using LibraryManagement.Application.Authors;
 using LibraryManagement.Application.Authors.Commands.CreateAuthor;
+using LibraryManagement.Application.Authors.Commands.UpdateAuthor;
+using LibraryManagement.Application.Authors.Queries.GetAuthor;
 using LibraryManagement.Application.Authors.Queries.GetAuthors;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -35,4 +37,41 @@ public class AuthorsController : ControllerBase
         var authors = await _sender.Send(query, cancellationToken);
         return Ok(authors);
     }
+
+  [HttpGet("{id}")]
+  public async Task<ActionResult<AuthorDto>> GetAuthorByIdAsync(
+    [FromQuery] int id,
+    CancellationToken cancellationToken)
+  {
+    var query = new GetAuthorByIdAsync(id);
+    var author = await _sender.Send(query, cancellationToken);
+    if (author == null)
+    {
+      return NotFound();
+    }
+    return Ok(author);
+  }
+
+  [HttpPut("{id}")]
+  public async Task<ActionResult> UpdateAuthorAsync(
+     [FromRoute] int id,
+     [FromBody] UpdateAuthorCommand command,
+     CancellationToken cancellationToken)
+  {
+    if (id != command.Id)
+    {
+      return BadRequest();
+    }
+
+    var updated = await _sender.Send(command, cancellationToken);
+
+    if (!updated)
+    {
+      return NotFound();
+    }
+
+    return NoContent();
+  }
+
 }
+

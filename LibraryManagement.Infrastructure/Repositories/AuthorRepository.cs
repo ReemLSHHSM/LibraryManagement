@@ -28,4 +28,24 @@ public class AuthorRepository : IAuthorRepository
     return await _context.Authors.ToListAsync(cancellationToken);
 
   }
+
+  public async Task<Author> GetAuthorByIdAsync(int id, CancellationToken cancellationToken)
+  {
+    return await _context.Authors.FirstOrDefaultAsync(a => a.Id == id, cancellationToken);
+  }
+
+  public async Task<bool> UpdateAuthorAsync(Author author, CancellationToken cancellationToken)
+  {
+    var existingAuthor = await _context.Authors.FindAsync(new object[] { author.Id }, cancellationToken);
+    if (existingAuthor == null)
+    {
+      return false;
+    }
+    existingAuthor.Name = author.Name;
+    existingAuthor.Bio = author.Bio;
+    existingAuthor.ModifiedAt = DateTime.UtcNow;
+    _context.Authors.Update(existingAuthor);
+    await _context.SaveChangesAsync(cancellationToken);
+    return true;
+  }
 }

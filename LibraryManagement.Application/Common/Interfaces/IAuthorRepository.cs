@@ -10,4 +10,12 @@ public interface IAuthorRepository
 
   Task<List<Author>> GetAuthorsAsync(
     CancellationToken cancellationToken);
+
+  Task<Author> GetAuthorByIdAsync(
+    int id,
+    CancellationToken cancellationToken);
+
+  Task <bool> UpdateAuthorAsync(
+    Author author,
+    CancellationToken cancellationToken);
 }
