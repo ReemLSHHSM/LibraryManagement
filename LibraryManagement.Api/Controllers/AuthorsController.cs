@@ -1,5 +1,6 @@
 using LibraryManagement.Application.Authors;
 using LibraryManagement.Application.Authors.Commands.CreateAuthor;
+using LibraryManagement.Application.Authors.Commands.DeleteAuthor;
 using LibraryManagement.Application.Authors.Commands.UpdateAuthor;
 using LibraryManagement.Application.Authors.Queries.GetAuthor;
 using LibraryManagement.Application.Authors.Queries.GetAuthors;
@@ -66,6 +67,21 @@ public class AuthorsController : ControllerBase
     var updated = await _sender.Send(command, cancellationToken);
 
     if (!updated)
+    {
+      return NotFound();
+    }
+
+    return NoContent();
+  }
+
+  [HttpDelete("{id}")]
+  public async Task<ActionResult> DeleteAuthorAsync(
+    [FromRoute] int id,
+    CancellationToken cancellationToken)
+  {
+    var deleted = await _sender.Send(new DeleteAuthorCommand(id), cancellationToken);
+
+    if (!deleted)
     {
       return NotFound();
     }

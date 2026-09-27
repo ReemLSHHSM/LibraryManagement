@@ -18,4 +18,8 @@ public interface IAuthorRepository
   Task <bool> UpdateAuthorAsync(
     Author author,
     CancellationToken cancellationToken);
+
+  Task <bool> DeleteAuthorAsync(
+    int id,
+    CancellationToken cancellationToken);
 }

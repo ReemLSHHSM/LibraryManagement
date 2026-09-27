@@ -48,4 +48,16 @@ public class AuthorRepository : IAuthorRepository
     await _context.SaveChangesAsync(cancellationToken);
     return true;
   }
+
+  public async Task<bool> DeleteAuthorAsync(int id, CancellationToken cancellationToken)
+  {
+    var author = await _context.Authors.FindAsync(new object[] { id }, cancellationToken);
+    if (author == null)
+    {
+      return false;
+    }
+    _context.Authors.Remove(author);
+    await _context.SaveChangesAsync(cancellationToken);
+    return true;
+  }
 }
