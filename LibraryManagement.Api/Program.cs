@@ -14,7 +14,6 @@ namespace LibraryManagement.Api
       builder.Services.AddApplication();
       builder.Services.AddInfrastructure(builder.Configuration);
 
-      // Controllers
       builder.Services.AddControllers();
 
       builder.Services.ConfigureHttpJsonOptions(options =>
@@ -22,18 +21,14 @@ namespace LibraryManagement.Api
   options.SerializerOptions.NumberHandling = JsonNumberHandling.Strict;
 });
 
-      // OpenAPI
       builder.Services.AddOpenApi();
 
       var app = builder.Build();
 
-      // Development only
       if (app.Environment.IsDevelopment())
       {
-        // Generate the OpenAPI document
         app.MapOpenApi();
 
-        // Swagger UI
         app.UseSwaggerUI(options =>
         {
           options.SwaggerEndpoint(
@@ -46,6 +41,7 @@ namespace LibraryManagement.Api
       app.UseHttpsRedirection();
 
       app.UseAuthorization();
+      
 
       app.MapControllers();
 

@@ -5,12 +5,14 @@ using LibraryManagement.Application.Authors.Commands.UpdateAuthor;
 using LibraryManagement.Application.Authors.Queries.GetAuthor;
 using LibraryManagement.Application.Authors.Queries.GetAuthors;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagement.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = "Admin")]
 public class AuthorsController : ControllerBase
 {
     private readonly ISender _sender;
@@ -41,7 +43,7 @@ public class AuthorsController : ControllerBase
 
   [HttpGet("{id}")]
   public async Task<ActionResult<AuthorDto>> GetAuthorByIdAsync(
-    [FromQuery] int id,
+    [FromRoute] int id,
     CancellationToken cancellationToken)
   {
     var query = new GetAuthorByIdAsync(id);
