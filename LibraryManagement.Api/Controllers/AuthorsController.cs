@@ -1,45 +1,43 @@
-using LibraryManagement.Application.Features.Authors.Commands.DeleteAuthor;
-using LibraryManagement.Application.Features.Authors.Queries.GetAuthor;
-using LibraryManagement.Application.Features.Authors.Queries.GetAuthors;
 using LibraryManagement.Application.Features.Authors;
 using LibraryManagement.Application.Features.Authors.Commands.CreateAuthor;
+using LibraryManagement.Application.Features.Authors.Commands.DeleteAuthor;
 using LibraryManagement.Application.Features.Authors.Commands.UpdateAuthor;
+using LibraryManagement.Application.Features.Authors.Queries.GetAuthor;
+using LibraryManagement.Application.Features.Authors.Queries.GetAuthors;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagement.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = "Admin")]
 public class AuthorsController : ControllerBase
 {
-    private readonly ISender _sender;
+  private readonly ISender _sender;
 
-    public AuthorsController(ISender sender)
-    {
-        _sender = sender;
-    }
+  public AuthorsController(ISender sender)
+  {
+    _sender = sender;
+  }
 
-    [HttpPost]
-    public async Task<ActionResult<int>> Create(
-        CreateAuthorCommand command,
-        CancellationToken cancellationToken)
-    {
-        var authorId = await _sender.Send(command, cancellationToken);
+  [HttpPost]
+  public async Task<ActionResult<int>> Create(
+      CreateAuthorCommand command,
+      CancellationToken cancellationToken)
+  {
+    var authorId = await _sender.Send(command, cancellationToken);
 
-        return Ok(authorId);
-    }
+    return Ok(authorId);
+  }
 
-    [HttpGet]
-    public async Task<ActionResult<List<AuthorDto>>> GetAuthors(
-        CancellationToken cancellationToken)
-    {
-        var query = new GetAuthorsQuery();
-        var authors = await _sender.Send(query, cancellationToken);
-        return Ok(authors);
-    }
+  [HttpGet]
+  public async Task<ActionResult<List<AuthorDto>>> GetAuthors(
+      CancellationToken cancellationToken)
+  {
+    var query = new GetAuthorsQuery();
+    var authors = await _sender.Send(query, cancellationToken);
+    return Ok(authors);
+  }
 
   [HttpGet("{id}")]
   public async Task<ActionResult<AuthorDto>> GetAuthorByIdAsync(
