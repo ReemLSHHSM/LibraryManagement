@@ -1,9 +1,9 @@
-using LibraryManagement.Application.Books;
-using LibraryManagement.Application.Books.Commands.CreateBook;
-using LibraryManagement.Application.Books.Commands.DeleteBook;
-using LibraryManagement.Application.Books.Commands.UpdateBook;
-using LibraryManagement.Application.Books.Queries.GetBookById;
-using LibraryManagement.Application.Books.Queries.GetBooks;
+using LibraryManagement.Application.Features.Books;
+using LibraryManagement.Application.Features.Books.Commands.CreateBook;
+using LibraryManagement.Application.Features.Books.Commands.DeleteBookCommand;
+using LibraryManagement.Application.Features.Books.Commands.UpdateBook;
+using LibraryManagement.Application.Features.Books.Queries.GetBookById;
+using LibraryManagement.Application.Features.Books.Queries.GetBooks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

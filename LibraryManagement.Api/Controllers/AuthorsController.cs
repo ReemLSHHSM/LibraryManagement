@@ -1,9 +1,9 @@
-using LibraryManagement.Application.Authors;
-using LibraryManagement.Application.Authors.Commands.CreateAuthor;
-using LibraryManagement.Application.Authors.Commands.DeleteAuthor;
-using LibraryManagement.Application.Authors.Commands.UpdateAuthor;
-using LibraryManagement.Application.Authors.Queries.GetAuthor;
-using LibraryManagement.Application.Authors.Queries.GetAuthors;
+using LibraryManagement.Application.Features.Authors.Commands.DeleteAuthor;
+using LibraryManagement.Application.Features.Authors.Queries.GetAuthor;
+using LibraryManagement.Application.Features.Authors.Queries.GetAuthors;
+using LibraryManagement.Application.Features.Authors;
+using LibraryManagement.Application.Features.Authors.Commands.CreateAuthor;
+using LibraryManagement.Application.Features.Authors.Commands.UpdateAuthor;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

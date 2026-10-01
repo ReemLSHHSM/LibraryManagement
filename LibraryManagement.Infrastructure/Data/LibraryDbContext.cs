@@ -1,9 +1,10 @@
+using LibraryManagement.Application.Common.Interfaces;
 using LibraryManagement.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagement.Infrastructure.Data;
 
-public class LibraryDbContext : DbContext
+public class LibraryDbContext : DbContext, ILibraryDbContext
 {
   public LibraryDbContext(DbContextOptions<LibraryDbContext> options)
       : base(options)
@@ -20,35 +21,8 @@ public class LibraryDbContext : DbContext
   {
     base.OnModelCreating(modelBuilder);
 
-    // User -> Borrower
-    modelBuilder.Entity<User>()
-        .HasOne(u => u.Borrower)
-        .WithOne(b => b.User)
-        .HasForeignKey<Borrower>(b => b.UserId)
-        .OnDelete(DeleteBehavior.Cascade);
-
-
-    // Author -> Books
-    modelBuilder.Entity<Author>()
-        .HasMany(a => a.Books)
-        .WithOne(b => b.Author)
-        .HasForeignKey(b => b.AuthorId)
-        .OnDelete(DeleteBehavior.Cascade);
-
-
-    // Borrower -> Loans
-    modelBuilder.Entity<Borrower>()
-        .HasMany(b => b.Loans)
-        .WithOne(l => l.Borrower)
-        .HasForeignKey(l => l.BorrowerId)
-        .OnDelete(DeleteBehavior.Cascade);
-
-
-    // Book -> Loans
-    modelBuilder.Entity<Book>()
-        .HasMany(b => b.Loans)
-        .WithOne(l => l.Book)
-        .HasForeignKey(l => l.BookId)
-        .OnDelete(DeleteBehavior.Cascade);
+    modelBuilder.ApplyConfigurationsFromAssembly(
+        typeof(LibraryDbContext).Assembly
+    );
   }
 }
