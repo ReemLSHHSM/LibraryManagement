@@ -1,5 +1,9 @@
+using LibraryManagement.Application.Common.Results;
 using MediatR;
 
 namespace LibraryManagement.Application.Features.Books.Commands.DeleteBookCommand;
 
-public record DeleteBookCommand(int Id) : IRequest<bool>;
+public class DeleteBookCommand : IRequest<Result>
+{
+    public int Id { get; set; }
+}

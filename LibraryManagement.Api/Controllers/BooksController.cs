@@ -72,19 +72,22 @@ namespace LibraryManagement.Api.Controllers
       return NoContent();
     }
 
-    [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteBook(
-    [FromRoute] int id,
-    CancellationToken cancellationToken)
-    {
-      var deleted = await _sender.Send(
-          new DeleteBookCommand(id),
-          cancellationToken);
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBook(
+        [FromRoute] int id,
+        CancellationToken cancellationToken)
+        {
+            var result = await _sender.Send(
+                new DeleteBookCommand
+                {
+                    Id = id
+                },
+                cancellationToken);
 
-      if (!deleted)
-        return NotFound();
+            if (result.IsFailure)
+                return NotFound(result.Error);
 
-      return NoContent();
+            return NoContent();
+        }
     }
-  }
 }

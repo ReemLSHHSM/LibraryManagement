@@ -1,24 +1,39 @@
 using LibraryManagement.Application.Common.Interfaces;
+using LibraryManagement.Application.Common.Results;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagement.Application.Features.Books.Commands.DeleteBookCommand;
 
 public class DeleteBookCommandHandler
-    : IRequestHandler<DeleteBookCommand, bool>
+    : IRequestHandler<DeleteBookCommand, Result>
 {
-  private readonly IBookRepository _bookRepository;
+    private readonly ILibraryDbContext _libraryDbContext;
 
-  public DeleteBookCommandHandler(IBookRepository bookRepository)
-  {
-    _bookRepository = bookRepository;
-  }
+    public DeleteBookCommandHandler(
+        ILibraryDbContext libraryDbContext)
+    {
+        _libraryDbContext = libraryDbContext;
+    }
 
-  public async Task<bool> Handle(
-      DeleteBookCommand request,
-      CancellationToken cancellationToken)
-  {
-    return await _bookRepository.DeleteBookAsync(
-        request.Id,
-        cancellationToken);
-  }
+    public async Task<Result> Handle(
+        DeleteBookCommand request,
+        CancellationToken cancellationToken)
+    {
+        var book = await _libraryDbContext.Books
+            .FirstOrDefaultAsync(
+                b => b.Id == request.Id,
+                cancellationToken);
+
+        if (book is null)
+        {
+            return Result.Failure(BookErrors.NotFound);
+        }
+
+        _libraryDbContext.Books.Remove(book);
+
+        await _libraryDbContext.SaveChangesAsync(cancellationToken);
+
+        return Result.Success();
+    }
 }

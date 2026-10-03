@@ -1,6 +1,5 @@
 using LibraryManagement.Application.Common.Interfaces;
 using LibraryManagement.Infrastructure.Data;
-using LibraryManagement.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,8 +20,6 @@ public static class DependencyInjection
     services.AddScoped<ILibraryDbContext>(
         provider => provider.GetRequiredService<LibraryDbContext>()
     );
-    services.AddScoped<IBookRepository, BookRepository>();
-    services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
     return services;
   }

@@ -1,6 +1,6 @@
 using LibraryManagement.Application.Common.Interfaces;
-using LibraryManagement.Application.Features.Books;
 using Mapster;
+using Microsoft.EntityFrameworkCore;
 using MediatR;
 
 namespace LibraryManagement.Application.Features.Books.Queries.GetBookById;
@@ -8,19 +8,19 @@ namespace LibraryManagement.Application.Features.Books.Queries.GetBookById;
 public class GetBookByIdQueryHandler
     : IRequestHandler<GetBookByIdQuery, BookDto?>
 {
-  private readonly IBookRepository _bookRepository;
+  private readonly ILibraryDbContext _libraryDbContext;
 
-  public GetBookByIdQueryHandler(IBookRepository bookRepository)
+  public GetBookByIdQueryHandler(ILibraryDbContext libraryDbContext)
   {
-    _bookRepository = bookRepository;
+        _libraryDbContext = libraryDbContext;
   }
 
   public async Task<BookDto?> Handle(
       GetBookByIdQuery request,
       CancellationToken cancellationToken)
   {
-    var book = await _bookRepository.GetBookByIdAsync(
-        request.Id,
+    var book = await _libraryDbContext.Books.FirstOrDefaultAsync(
+        b => b.Id == request.Id,
         cancellationToken);
 
     if (book == null)

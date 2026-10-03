@@ -11,17 +11,17 @@ namespace LibraryManagement.Application.Features.Books.Commands.CreateBook
   public class CreateBookCommandHandler:IRequestHandler<CreateBookCommand, int>
   {
 
-    private readonly IBookRepository bookRepository;
+    private readonly ILibraryDbContext _libraryDbContext;
 
-    public CreateBookCommandHandler(IBookRepository bookRepository)
+    public CreateBookCommandHandler(ILibraryDbContext libraryDbContext)
     {
-      this.bookRepository = bookRepository;
+      _libraryDbContext = _libraryDbContext;
     }
 
     public async Task<int> Handle(CreateBookCommand request, CancellationToken cancellationToken)
     {
       var book = request.Adapt<Book>();
-      await bookRepository.CreateBookAsync(book, cancellationToken);
+      await _libraryDbContext.Books.AddAsync(book, cancellationToken);
       return book.Id;
     }
   }

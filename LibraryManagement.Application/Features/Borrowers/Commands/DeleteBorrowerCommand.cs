@@ -1,5 +1,7 @@
+using LibraryManagement.Application.Common.Interfaces;
 using LibraryManagement.Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagement.Application.Features.Borrowers.Commands.DeleteBorrower;
 
@@ -11,20 +13,20 @@ public class DeleteBorrowerCommand : IRequest<bool>
 public class DeleteBorrowerCommandHandler
     : IRequestHandler<DeleteBorrowerCommand, bool>
 {
-  private readonly IGenericRepository<Borrower> _repository;
+    private readonly ILibraryDbContext _libraryDbContext;
 
-  public DeleteBorrowerCommandHandler(
-      IGenericRepository<Borrower> repository)
+    public DeleteBorrowerCommandHandler(
+      ILibraryDbContext libraryDbContext)
   {
-    _repository = repository;
+        _libraryDbContext = libraryDbContext;
   }
 
   public async Task<bool> Handle(
       DeleteBorrowerCommand request,
       CancellationToken cancellationToken)
   {
-    var borrower = await _repository.GetByIdAsync(
-        request.Id,
+    var borrower = await _libraryDbContext.Borrowers.FirstOrDefaultAsync(
+        b => b.Id == request.Id,
         cancellationToken);
 
     if (borrower is null)
@@ -32,9 +34,8 @@ public class DeleteBorrowerCommandHandler
       return false;
     }
 
-    await _repository.DeleteAsync(
-        borrower,
-        cancellationToken);
+    _libraryDbContext.Borrowers.Remove(borrower);
+    await _libraryDbContext.SaveChangesAsync(cancellationToken);
 
     return true;
   }

@@ -1,3 +1,4 @@
+using LibraryManagement.Application.Common.Interfaces;
 using LibraryManagement.Domain.Entities;
 using MediatR;
 
@@ -12,12 +13,12 @@ public class CreateBorrowerCommand : IRequest<int>
 public class CreateBorrowerCommandHandler
     : IRequestHandler<CreateBorrowerCommand, int>
 {
-  private readonly IGenericRepository<Borrower> _repository;
+  private readonly ILibraryDbContext _libraryDbContext;
 
   public CreateBorrowerCommandHandler(
-      IGenericRepository<Borrower> repository)
+      ILibraryDbContext libraryDbContext)
   {
-    _repository = repository;
+        _libraryDbContext = libraryDbContext;
   }
 
   public async Task<int> Handle(
@@ -32,9 +33,11 @@ public class CreateBorrowerCommandHandler
       ModifiedAt = DateTime.UtcNow
     };
 
-    await _repository.AddAsync(
+    await _libraryDbContext.Borrowers.AddAsync(
         borrower,
         cancellationToken);
+        
+    await _libraryDbContext.SaveChangesAsync(cancellationToken);
 
     return borrower.Id;
   }

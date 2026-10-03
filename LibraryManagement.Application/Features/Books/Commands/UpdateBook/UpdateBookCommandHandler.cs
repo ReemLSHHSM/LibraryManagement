@@ -2,27 +2,38 @@ using LibraryManagement.Application.Common.Interfaces;
 using LibraryManagement.Domain.Entities;
 using Mapster;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagement.Application.Features.Books.Commands.UpdateBook;
 
 public class UpdateBookCommandHandler
     : IRequestHandler<UpdateBookCommand, bool>
 {
-  private readonly IBookRepository _bookRepository;
+  private readonly ILibraryDbContext _libraryDbContext;
 
-  public UpdateBookCommandHandler(IBookRepository bookRepository)
+  public UpdateBookCommandHandler(ILibraryDbContext libraryDbContext)
   {
-    _bookRepository = bookRepository;
+        _libraryDbContext = libraryDbContext;
   }
 
-  public async Task<bool> Handle(
+    public async Task<bool> Handle(
       UpdateBookCommand request,
       CancellationToken cancellationToken)
-  {
-    var book = request.Adapt<Book>();
+    {
+        var book = await _libraryDbContext.Books
+            .FirstOrDefaultAsync(
+                b => b.Id == request.Id,
+                cancellationToken);
 
-    return await _bookRepository.UpdateBookAsync(
-        book,
-        cancellationToken);
-  }
+        if (book is null)
+            return false;
+
+        request.Adapt(book);
+
+        book.ModifiedAt = DateTime.UtcNow;
+
+        await _libraryDbContext.SaveChangesAsync(cancellationToken);
+
+        return true;
+    }
 }
