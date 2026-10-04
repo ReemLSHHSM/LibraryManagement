@@ -1,6 +1,8 @@
+using LibraryManagement.Domain.Common;
+
 namespace LibraryManagement.Domain.Entities;
 
-public class Book
+public class Book : BaseEntity
 {
   public int Id { get; set; }
   public string Title { get; set; } = string.Empty;

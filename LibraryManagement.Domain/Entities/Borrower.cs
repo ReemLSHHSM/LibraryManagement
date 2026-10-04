@@ -1,6 +1,8 @@
+using LibraryManagement.Domain.Common;
+
 namespace LibraryManagement.Domain.Entities;
 
-public class Borrower
+public class Borrower : BaseEntity
 {
   public int Id { get; set; }
   public string Phone { get; set; } = string.Empty;

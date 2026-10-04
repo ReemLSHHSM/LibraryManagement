@@ -3,15 +3,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagement.Application.Common.Interfaces
 {
-    public interface ILibraryDbContext
-    {
-        DbSet<Author> Authors { get; }
+  public interface ILibraryDbContext
+  {
+    DbSet<Author> Authors { get; }
 
-        DbSet<Book> Books { get; }
+    DbSet<Book> Books { get; }
 
-        DbSet<Borrower> Borrowers { get; }
+    DbSet<Borrower> Borrowers { get; }
 
-        Task<int> SaveChangesAsync(
+    DbSet<Loan> Loans { get; }
+
+    Task<int> SaveChangesAsync(
         CancellationToken cancellationToken = default);
-    }
+  }
 }
