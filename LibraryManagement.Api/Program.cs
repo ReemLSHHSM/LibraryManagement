@@ -1,3 +1,4 @@
+using LibraryManagement.Api.Filters;
 using LibraryManagement.Application;
 using LibraryManagement.Infrastructure;
 using System.Text.Json.Serialization;
@@ -21,6 +22,8 @@ namespace LibraryManagement.Api
   options.SerializerOptions.NumberHandling = JsonNumberHandling.Strict;
 });
 
+      builder.Services.AddScoped<RequestLoggingFilter>();
+
       builder.Services.AddOpenApi();
 
       var app = builder.Build();
@@ -41,7 +44,7 @@ namespace LibraryManagement.Api
       app.UseHttpsRedirection();
 
       app.UseAuthorization();
-      
+
 
       app.MapControllers();
 

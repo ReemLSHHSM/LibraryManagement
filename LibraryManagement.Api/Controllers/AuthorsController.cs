@@ -1,3 +1,4 @@
+using LibraryManagement.Api.Filters;
 using LibraryManagement.Application.Features.Authors;
 using LibraryManagement.Application.Features.Authors.Commands.CreateAuthor;
 using LibraryManagement.Application.Features.Authors.Commands.DeleteAuthor;
@@ -11,6 +12,7 @@ namespace LibraryManagement.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[ServiceFilter(typeof(RequestLoggingFilter))]
 public class AuthorsController : ControllerBase
 {
   private readonly ISender _sender;
