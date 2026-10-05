@@ -9,7 +9,8 @@ public class CreateAuthorCommandValidator
   {
     RuleFor(x => x.Name)
         .NotEmpty()
-        .MaximumLength(100);
+        .MaximumLength(100)
+        .WithMessage("Author name is required and must not exceed 100 characters.");
 
     RuleFor(x => x.Bio)
         .MaximumLength(1000)

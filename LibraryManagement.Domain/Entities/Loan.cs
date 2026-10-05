@@ -1,6 +1,8 @@
+using LibraryManagement.Domain.Common;
+
 namespace LibraryManagement.Domain.Entities;
 
-public class Loan
+public class Loan : BaseEntity
 {
   public int Id { get; set; }
 
