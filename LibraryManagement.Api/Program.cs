@@ -29,7 +29,6 @@ namespace LibraryManagement.Api
 });
 
       builder.Services.AddScoped<RequestLoggingFilter>();
-
       builder.Services.AddOpenApi();
 
       var app = builder.Build();

@@ -1,5 +1,6 @@
 using LibraryManagement.Application.Common.Interfaces;
 using LibraryManagement.Infrastructure.Data;
+using LibraryManagement.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +21,20 @@ public static class DependencyInjection
     services.AddScoped<ILibraryDbContext>(
         provider => provider.GetRequiredService<LibraryDbContext>()
     );
+
+    services.AddHttpClient<IExternalBookService, ExternalBookService>(client =>
+    {
+      client.BaseAddress = new Uri(configuration["ExternalApis:LibraryApiBaseUrl"]!);
+    });
+
+    //services.AddRefitClient<ILibraryApi>()
+    //.ConfigureHttpClient(client =>
+    //{
+    //  client.BaseAddress = new Uri(
+    //      configuration["ExternalApis:LibraryApiBaseUrl"]!);
+    //});
+
+    //services.AddScoped<IExternalBookService, RefitExternalBookService>();
 
     return services;
   }

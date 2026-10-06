@@ -1,4 +1,3 @@
-
 namespace LibraryManagement.Domain.Entities;
 
 public class Loan
