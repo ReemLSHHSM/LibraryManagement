@@ -9,9 +9,9 @@ namespace LibraryManagement.Infrastructure.Services
   {
     private readonly HttpClient _httpClient;
 
-    public ExternalBookService(HttpClient httpClient)
+    public ExternalBookService(IHttpClientFactory httpClientFactory)
     {
-      _httpClient = httpClient;
+      _httpClient = httpClientFactory.CreateClient("LibraryApi");
     }
 
 
