@@ -24,9 +24,10 @@ public class AuthorsController : ControllerBase
 
   [HttpPost]
   public async Task<ActionResult<int>> Create(
-      CreateAuthorCommand command,
+      CreateAuthorDto CreateAuthorDto,
       CancellationToken cancellationToken)
   {
+    var command = new CreateAuthorCommand(CreateAuthorDto);
     var authorId = await _sender.Send(command, cancellationToken);
 
     return Ok(authorId);

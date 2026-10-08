@@ -21,7 +21,7 @@ public class CreateAuthorCommandHandler
       CreateAuthorCommand request,
       CancellationToken cancellationToken)
   {
-    var author = request.Adapt<Author>();
+    var author = request.CreateAuthorDto.Adapt<Author>();
 
     author.CreatedAt = DateTime.UtcNow;
     author.ModifiedAt = DateTime.UtcNow;

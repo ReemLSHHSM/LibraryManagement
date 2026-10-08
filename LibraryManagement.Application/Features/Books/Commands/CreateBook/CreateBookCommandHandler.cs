@@ -17,7 +17,7 @@ namespace LibraryManagement.Application.Features.Books.Commands.CreateBook
 
     public async Task<int> Handle(CreateBookCommand request, CancellationToken cancellationToken)
     {
-      var book = request.Adapt<Book>();
+      var book = request.CreateBookDto.Adapt<Book>();
       await _libraryDbContext.Books.AddAsync(book, cancellationToken);
       await _libraryDbContext.SaveChangesAsync(cancellationToken);
       return book.Id;

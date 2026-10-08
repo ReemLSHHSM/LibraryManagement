@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace LibraryManagement.Application.Features.Authors
 {
   public class AuthorDto
@@ -11,5 +7,12 @@ namespace LibraryManagement.Application.Features.Authors
     public string Name { get; set; } = string.Empty;
 
     public string? Bio { get; set; }
+  }
+
+  public class CreateAuthorDto
+  {
+    public string Name { get; set; } = string.Empty;
+
+    public string Bio { get; set; }
   }
 }

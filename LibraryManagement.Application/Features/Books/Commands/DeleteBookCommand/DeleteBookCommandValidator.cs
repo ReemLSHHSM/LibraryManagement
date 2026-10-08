@@ -7,7 +7,8 @@ namespace LibraryManagement.Application.Features.Books.Commands.DeleteBookComman
     public DeleteBookCommandValidator()
     {
       RuleFor(x => x.Id)
-        .GreaterThan(0).WithMessage("Book Id must be greater than 0.");
+        .GreaterThan(0)
+        .WithMessage("Book Id must be greater than 0.");
     }
   }
 }

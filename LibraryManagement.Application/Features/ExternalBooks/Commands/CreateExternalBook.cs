@@ -1,3 +1,4 @@
+using FluentValidation;
 using LibraryManagement.Application.Common.Dtos;
 using LibraryManagement.Application.Common.Interfaces;
 using MediatR;
@@ -37,6 +38,36 @@ namespace LibraryManagement.Application.Features.ExternalBooks.Commands
       await _externalBookService.CreateBookAsync(
           book,
           cancellationToken);
+    }
+  }
+
+  public class CreateExternalBookCommandValidator
+      : AbstractValidator<CreateExternalBookCommand>
+  {
+    public CreateExternalBookCommandValidator()
+    {
+      RuleFor(x => x.Title)
+          .NotEmpty()
+          .WithMessage("Title is required.")
+          .MinimumLength(2)
+          .WithMessage("Title must be at least 2 characters.")
+          .MaximumLength(200)
+          .WithMessage("Title must not exceed 200 characters.");
+
+      RuleFor(x => x.Author)
+          .MaximumLength(100)
+          .WithMessage("Author must not exceed 100 characters.");
+
+      RuleFor(x => x.Category)
+          .MaximumLength(100)
+          .WithMessage("Category must not exceed 100 characters.");
+
+      RuleFor(x => x.PublishedYear)
+          .GreaterThan(0)
+          .WithMessage("Published year must be greater than 0.")
+          .LessThanOrEqualTo(DateTime.UtcNow.Year)
+          .WithMessage("Published year cannot be in the future.")
+          .When(x => x.PublishedYear.HasValue);
     }
   }
 }

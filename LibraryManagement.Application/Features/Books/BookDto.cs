@@ -9,3 +9,13 @@ public class BookDto
   public bool IsAvailable { get; set; }
   public int AuthorId { get; set; }
 }
+
+public class CreateBookDto
+{
+  public string Title { get; set; } = string.Empty;
+  public string ISBN { get; set; } = string.Empty;
+  public DateTime PublishedDate { get; set; }
+  public int AuthorId { get; set; }
+}
+
+
